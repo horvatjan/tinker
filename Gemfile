@@ -12,8 +12,6 @@ gem 'pg'
 
 gem 'spring', :group => :development
 
-gem 'mysql2'
-
 gem 'jbuilder' # used for serialization of models into JSON
 
 gem 'kaminari' # adds pagination to ActiveModels
