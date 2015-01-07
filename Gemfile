@@ -1,4 +1,5 @@
 source 'https://rubygems.org'
+ruby '2.1.1'
 
 gem 'rails', '4.1.5'
 
@@ -21,6 +22,8 @@ gem 'kaminari' # adds pagination to ActiveModels
 gem 'devise'
 
 gem 'houston'
+
+gem 'rails_12factor'
 
 group :development do
   gem 'pry'
