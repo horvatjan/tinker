@@ -59,10 +59,15 @@ GEM
       treetop (~> 1.4.8)
     method_source (0.8.2)
     mime-types (1.25.1)
+    mina (0.3.1)
+      open4 (~> 1.3.4)
+      rake
     minitest (5.5.0)
     multi_json (1.10.1)
     mysql2 (0.3.17)
+    open4 (1.3.4)
     orm_adapter (0.5.0)
+    pg (0.18.0)
     polyglot (0.3.5)
     pry (0.10.1)
       coderay (~> 1.1.0)
@@ -124,7 +129,9 @@ DEPENDENCIES
   houston
   jbuilder
   kaminari
+  mina
   mysql2
+  pg
   pry
   puma
   rails (= 4.1.5)
