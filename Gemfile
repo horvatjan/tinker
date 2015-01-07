@@ -22,8 +22,6 @@ gem 'devise'
 
 gem 'houston'
 
-gem 'rails_12factor'
-
 group :development do
   gem 'pry'
 end
