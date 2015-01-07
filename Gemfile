@@ -26,6 +26,10 @@ group :development do
   gem 'pry'
 end
 
+gem 'rails_12factor', group: :production
+
+ruby "2.1.5"
+
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.1.2'
 

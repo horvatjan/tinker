@@ -28,11 +28,3 @@ test:
   database: tinker_test
   host: localhost
   pool: 10
-
-production:
-  adapter: postgresql
-  encoding: unicode
-  database: d3c24jg5vg9ceg
-  pool: 10
-  username: uscwbglajgeoww
-  password: ZqJtWJAnTEIW_0M1WitT-K0wDh
