@@ -1,8 +1,15 @@
 class ApplicationController < ActionController::API
   include ActionController::MimeResponds
+  include Api::V1::Concerns::Response
 
   respond_to :json
   skip_before_filter :authenticate_user!
+
+  def auth_user
+    user = User.where(authentication_token: request.headers[:token])
+    return error_response('User does not exist', 101) unless user.present?
+    return error_response('Token has expired', 102) unless (Time.now <= user.first.token_expiration ? true : false)
+  end
 
   protected
 

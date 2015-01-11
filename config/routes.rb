@@ -3,8 +3,14 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
+
       devise_for :users
       post 'users/find' => 'users#index'
+      post 'users/ban' => 'users#ban'
+      post 'users/sign_up' => 'registrations#create'
+      get 'friends/' => 'friends#index'
+      post 'friends/' => 'friends#create'
+      delete 'friends/:id' => 'friends#destroy'
       resources :tinks, :defaults => { :format => 'json' }
     end
   end

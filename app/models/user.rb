@@ -6,6 +6,8 @@ class User < ActiveRecord::Base
 
   has_many :tinks, primary_key: "id", foreign_key: "user_id"
   has_many :apns_tokens, primary_key: "id", foreign_key: "user_id"
+  has_many :friends, primary_key: "id", foreign_key: "user_id"
+  has_many :bans, primary_key: "id", foreign_key: "user_id"
 
   def ensure_authentication_token
     if authentication_token.blank? || Time.now > token_expiration

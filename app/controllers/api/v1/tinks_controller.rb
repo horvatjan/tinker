@@ -5,10 +5,9 @@ module Api
       require 'houston'
 
       def index
-        user = User.where(authentication_token: request.headers[:token])
-        return error_response('User does not exist', 101) unless user.present?
-        return error_response('Token has expired', 102) unless (Time.now <= user.first.token_expiration ? true : false)
+        auth_user and return
 
+        user = User.where(authentication_token: request.headers[:token])
         tinks = [
           outgoing: Tink.where(user_id: user.first.id),
           incoming: Tink.where(recipient_id: user.first.id)
@@ -18,9 +17,13 @@ module Api
       end
 
       def create
+        auth_user and return
+
         user = User.where(authentication_token: request.headers[:token])
-        return error_response('User does not exist', 101) unless user.present?
-        return error_response('Token has expired', 102) unless (Time.now <= user.first.token_expiration ? true : false)
+
+        return error_response('Recipient id is required', 103) unless params[:tink][:recipient_id].present?
+        return error_response('Recipient does not exists', 104) if User.where(id: params[:tink][:recipient_id]).blank?
+        return error_response('Recipient has been banned', 105) unless Ban.where(user_id: user.first.id, banned_id: params[:tink][:recipient_id]).empty?
 
         tink = Tink.create(user_id: user.first.id, recipient_id: params[:tink][:recipient_id], read: 0)
 
@@ -32,10 +35,9 @@ module Api
       end
 
       def destroy
-        user = User.where(authentication_token: request.headers[:token])
-        return error_response('User does not exist', 101) unless user.present?
-        return error_response('Token has expired', 102) unless (Time.now <= user.first.token_expiration ? true : false)
+        auth_user and return
 
+        user = User.where(authentication_token: request.headers[:token])
         tink = Tink.where(id: params[:id], recipient_id: user.first.id).first
         tink.update(read: "1")
       end
