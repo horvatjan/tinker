@@ -18,6 +18,10 @@ gem 'kaminari' # adds pagination to ActiveModels
 
 gem 'devise'
 
+gem 'bcrypt'
+
+gem 'passgen'
+
 gem 'houston'
 
 group :development do

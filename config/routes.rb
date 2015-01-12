@@ -7,6 +7,8 @@ Rails.application.routes.draw do
       devise_for :users
       post 'users/find' => 'users#index'
       post 'users/ban' => 'users#ban'
+      post 'users/edit' => 'users#edit'
+      post 'users/new_password' => 'users#new_password'
       post 'users/sign_up' => 'registrations#create'
       get 'friends/' => 'friends#index'
       post 'friends/' => 'friends#create'
