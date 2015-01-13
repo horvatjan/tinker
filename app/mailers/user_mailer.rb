@@ -1,10 +1,11 @@
 class UserMailer < ActionMailer::Base
 
-  default from: 'jan.horvat@google.com'
+  default from: 'no-reply@tinkerchat.com'
 
-  def newpassword(user)
+  def newpassword(user, password)
     @user = user
-    mail(to: @user.first.email, subject: 'New password').deliver
+    @password = password
+    mail(to: @user.email, subject: 'Tinker Chat: New password').deliver
   end
 
 end

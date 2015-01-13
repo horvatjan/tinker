@@ -21,15 +21,13 @@ module Api
       def new_password
         require 'bcrypt'
 
+        return error_response('Email address not provided', 103) unless params[:user][:email].present?
+        user = User.where(email: params[:user][:email]).first
+        return error_response('User with this email address does not exists', 104) if user.blank?
         new_password = Passgen::generate(:pronounceable => true, :uppercase => false, :digits_after => 3)
         encrypted_password = BCrypt::Password.create(new_password)
-
         User.where(email: params[:user][:email]).update_all(encrypted_password: encrypted_password)
-
-        user = user = User.where(email: params[:user][:email])
-        @user = user
-        UserMailer.newpassword(@user)
-
+        UserMailer.newpassword(user, new_password)
       end
 
       def ban
