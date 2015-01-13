@@ -135,6 +135,7 @@ DEPENDENCIES
   houston
   jbuilder
   kaminari
+  mail
   mina
   passgen
   pg

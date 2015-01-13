@@ -22,6 +22,8 @@ gem 'bcrypt'
 
 gem 'passgen'
 
+gem 'mail'
+
 gem 'houston'
 
 group :development do

@@ -24,13 +24,12 @@ module Api
         new_password = Passgen::generate(:pronounceable => true, :uppercase => false, :digits_after => 3)
         encrypted_password = BCrypt::Password.create(new_password)
 
-       User.where(email: params[:user][:email]).update_all(encrypted_password: encrypted_password)
+        User.where(email: params[:user][:email]).update_all(encrypted_password: encrypted_password)
 
-user = User.where(email: params[:user][:email]).first
-    @user = user
-    binding.pry
-    # I am overriding the 'to' default
-new_password_email(@user)
+        user = user = User.where(email: params[:user][:email])
+        @user = user
+        UserMailer.newpassword(@user)
+
       end
 
       def ban
