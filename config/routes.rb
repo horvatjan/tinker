@@ -10,12 +10,15 @@ Rails.application.routes.draw do
       post 'users/edit' => 'users#edit'
       post 'users/new_password' => 'users#new_password'
       post 'users/sign_up' => 'registrations#create'
+      post 'users/resend_confirmation_code' => 'users#resend_confirmation_code'
       get 'friends/' => 'friends#index'
       post 'friends/' => 'friends#create'
       delete 'friends/:id' => 'friends#destroy'
+      get 'account_activation/:id' => 'registrations#confirm_email'
       resources :tinks, :defaults => { :format => 'json' }
     end
   end
+
 
 #namespace :api, defaults: { format: "json" } do
 

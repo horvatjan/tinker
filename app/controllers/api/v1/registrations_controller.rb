@@ -17,17 +17,31 @@ module Api
             end
           end
 
-          success_response(
-            Jbuilder.encode do |j|
-              j.auth_token user.authentication_token
-            end
-          )
+          email_confirmation_code = rand(36**20).to_s(36)
+          User.where(id: User.last.id).update_all(email_confirmation_code: email_confirmation_code)
+          UserMailer.emailconfirmation(user, email_confirmation_code)
+
+          # success_response(
+          #   Jbuilder.encode do |j|
+          #     j.auth_token user.authentication_token
+          #   end
+          # )
         else
           error_response(
             'Email ' + user.errors.messages[:email].first,
             (user.errors.messages[:email].first == "can't be blank" ? 101 : 102)
           )
         end
+      end
+
+      def confirm_email
+        if User.where(email_confirmation_code: params[:id]).present?
+          User.where(email_confirmation_code: params[:id]).update_all(active: 1)
+          @text = 'Your email address has been confirmed.'
+        else
+          @text = 'Problems with account activation. Please, try again.'
+        end
+       render "registrations/confirm_email"
       end
     end
   end

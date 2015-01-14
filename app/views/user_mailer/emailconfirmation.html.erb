@@ -4,8 +4,8 @@
     <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
   </head>
   <body>
-    <h2>This is your new password, <%= @user.name %>!</h2>
-    <p><%= @password %></p>
+    <h2>Click on link below to activate your account</h2>
+    <a href="<%= @email_confirmation_url %>"><%= @email_confirmation_url %></a>
     <p>Thank you for using Tinkchat!</p>
   </body>
 </html>

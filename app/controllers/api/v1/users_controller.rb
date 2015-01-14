@@ -30,6 +30,16 @@ module Api
         UserMailer.newpassword(user, new_password)
       end
 
+      def resend_confirmation_code
+        return error_response('Email address not provided', 101) unless params[:user][:email].present?
+        user = User.where(email: params[:user][:email]).first
+        return error_response('User with this email address does not exists', 102) if user.blank?
+
+        email_confirmation_code = rand(36**20).to_s(36)
+        User.where(id: user.id).update_all(email_confirmation_code: email_confirmation_code, active: 0)
+        UserMailer.emailconfirmation(user, email_confirmation_code)
+      end
+
       def ban
         auth_user and return
 

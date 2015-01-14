@@ -8,4 +8,10 @@ class UserMailer < ActionMailer::Base
     mail(to: @user.email, subject: 'Tinker Chat: New password').deliver
   end
 
+  def emailconfirmation(user, email_confirmation_code)
+    @user = user
+    @email_confirmation_url = "https://morning-beyond-2497.herokuapp.com/api/v1/account_activation/" + email_confirmation_code
+    mail(to: @user.email, subject: 'Tinker Chat: Account activation').deliver
+  end
+
 end
