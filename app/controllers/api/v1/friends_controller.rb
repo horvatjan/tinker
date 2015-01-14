@@ -10,7 +10,7 @@ module Api
         friends = Friend.where(user_id: user.first.id)
         result = []
         friends.each do |friend|
-          fr = User.where(id: friend.friend_id).select("id, name, email")
+          fr = User.where(id: friend.friend_id).select("id AS user_id, name, email")
           result.push fr
         end
 
