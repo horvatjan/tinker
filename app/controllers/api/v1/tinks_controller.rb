@@ -9,8 +9,8 @@ module Api
 
         user = User.where(authentication_token: request.headers[:token])
         tinks = [
-          outgoing: Tink.where(user_id: user.first.id),
-          incoming: Tink.where(recipient_id: user.first.id)
+          outgoing: Tink.where(user_id: user.first.id).select("user_id, recipient_id, read, created_at"),
+          incoming: Tink.where(recipient_id: user.first.id).select("user_id, recipient_id, read, created_at")
         ]
 
         success_response(tinks)
@@ -25,13 +25,13 @@ module Api
         return error_response('Recipient does not exists', 104) if User.where(id: params[:tink][:recipient_id]).blank?
         return error_response('Recipient has been banned', 105) unless Ban.where(user_id: user.first.id, banned_id: params[:tink][:recipient_id]).empty?
 
-        tink = Tink.create(user_id: user.first.id, recipient_id: params[:tink][:recipient_id], read: 0)
+        Tink.create(user_id: user.first.id, recipient_id: params[:tink][:recipient_id], read: 0)
 
         ApnsToken.where(user_id: params[:tink][:recipient_id]).each do |t|
           send_push_notification(t.token, user.first.name, params[:tink][:recipient_id])
         end
 
-        success_response(tink)
+        success_response(Tink.where(id: Tink.last.id).select("user_id, recipient_id, read, created_at"))
       end
 
       def destroy
@@ -39,6 +39,9 @@ module Api
 
         user = User.where(authentication_token: request.headers[:token])
         tink = Tink.where(id: params[:id], recipient_id: user.first.id).first
+
+        return error_response('Recipient does not own that tink.', 103) if tink.blank?
+
         tink.update(read: "1")
       end
 

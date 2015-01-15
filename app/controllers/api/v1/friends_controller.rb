@@ -27,8 +27,8 @@ module Api
         return error_response('Can not befriend yourself', 105) if user.first.id == params[:friend_id].to_i
         return error_response('You are already friends with this user', 106) unless Friend.where(user_id: user.first.id, friend_id: params[:friend_id]).blank?
 
-        friend = Friend.create(user_id: user.first.id, friend_id: params[:friend_id])
-        success_response(friend)
+        Friend.create(user_id: user.first.id, friend_id: params[:friend_id])
+        success_response(Friend.where(id: Friend.last.id).select("user_id, friend_id, created_at"))
       end
 
       def destroy
