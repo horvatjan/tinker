@@ -5,6 +5,7 @@ module Api
       skip_before_filter :verify_authenticity_token
 
       def create
+        success_response(user_params) and return
         user = User.new(user_params)
         if user.save
 
