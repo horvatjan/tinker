@@ -5,6 +5,8 @@ module Api
       skip_before_filter :verify_authenticity_token
 
       def create
+        return error_response('Name is requred', 103) if user_params[:name].blank?
+
         user = User.new(user_params)
         if user.save
 
