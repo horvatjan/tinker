@@ -29,11 +29,35 @@ module Api
           #   end
           # )
         else
-          error_response(
-            'Email ' + user.errors.messages[:email].first,
-            (user.errors.messages[:email].first == "can't be blank" ? 101 : 102)
-          )
+          #binding.pry
+          if user.errors.messages[:password].present?
+            message = 'Password ' + user.errors.messages[:password].first
+            code = 103
+          else
+            message = 'Email ' + user.errors.messages[:email].first
+            code = (user.errors.messages[:email].first == "can't be blank" ? 101 : 102)
+          end
+          error_response(message, code)
         end
+      end
+
+      def fb_login
+
+        require 'uri'
+
+            #url = "https://graph.facebook.com/me?access_token="
+              #begin
+                #content = open(url + params[:user][:access_token])
+              #rescue OpenURI::HTTPError #with this I handle if the access token is not ok
+                #return render :json => {:error => "not_good_access_token" }
+              #end
+
+
+          #user_text = URI.escape(user_text)
+          url = "https://graph.facebook.com/me?access_token=#{params[:user][:access_token]}"
+          result = open(url).read
+
+        binding.pry
       end
 
       def confirm_email

@@ -8,12 +8,15 @@ module Api
         auth_user and return
 
         user = User.where(authentication_token: request.headers[:token])
-        tinks = [
-          outgoing: Tink.where(user_id: user.first.id).select("user_id, recipient_id, read, created_at"),
-          incoming: Tink.where(recipient_id: user.first.id).select("user_id, recipient_id, read, created_at")
-        ]
-
-        success_response(tinks)
+        tinks = Tink.where(recipient_id: user.first.id).select("id, user_id, recipient_id, read, created_at")
+        result = []
+        tinks.each do |tink|
+          sending_user = User.where(id: tink.recipient_id).first
+          res = {sender_name: sending_user.name, sender_id: sending_user.id, tink_id: tink.id, read: tink.read, created_at: tink.created_at.strftime("%FT%T%:z")}
+          result.push res
+        end
+        result = {tinks: result}
+        success_response(result)
       end
 
       def create
@@ -31,7 +34,7 @@ module Api
           send_push_notification(t.token, user.first.name, params[:tink][:recipient_id])
         end
 
-        success_response(Tink.where(id: Tink.last.id).select("user_id, recipient_id, read, created_at"))
+        success_response(Tink.where(id: Tink.last.id).select("user_id, recipient_id, read, created_at").first)
       end
 
       def destroy

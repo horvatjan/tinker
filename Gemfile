@@ -18,6 +18,8 @@ gem 'kaminari' # adds pagination to ActiveModels
 
 gem 'devise'
 
+gem "koala"
+
 gem 'bcrypt'
 
 gem 'passgen'
