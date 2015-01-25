@@ -36,6 +36,14 @@ gem 'jquery-rails'
 
 gem 'turbolinks'
 
+gem 'therubyracer'
+
+gem 'sass-rails'
+
+gem 'coffee-rails'
+
+gem 'uglifier'
+
 group :development do
   gem 'pry'
 end
