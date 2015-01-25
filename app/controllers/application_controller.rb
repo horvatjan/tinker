@@ -1,4 +1,5 @@
 class ApplicationController < ActionController::API
+
   include ActionController::MimeResponds
   include Api::V1::Concerns::Response
 

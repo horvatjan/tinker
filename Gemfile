@@ -28,6 +28,14 @@ gem 'mail'
 
 gem 'houston'
 
+gem 'rails_layout'
+
+gem 'bootstrap-sass'
+
+gem 'jquery-rails'
+
+gem 'turbolinks'
+
 group :development do
   gem 'pry'
 end
