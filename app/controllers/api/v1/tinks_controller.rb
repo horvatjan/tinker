@@ -52,7 +52,7 @@ module Api
       private
 
         def send_push_notification(apn_token, sender_name, recipient_id)
-          certificate = File.read("/var/www/projects/tinker/lib/apns-development.pem")
+          certificate = File.read("/lib/apns-development.pem")
           passphrase = ""
           connection = Houston::Connection.new(Houston::APPLE_DEVELOPMENT_GATEWAY_URI, certificate, passphrase)
           connection.open
