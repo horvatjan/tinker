@@ -12,6 +12,7 @@ Rails.application.routes.draw do
       post 'users/new_password' => 'users#new_password'
       post 'users/sign_up' => 'registrations#create'
       post 'users/resend_confirmation_code' => 'users#resend_confirmation_code'
+      post 'users/check' => 'users#check'
       get 'friends/' => 'friends#index'
       post 'friends/' => 'friends#create'
       delete 'friends/:id' => 'friends#destroy'

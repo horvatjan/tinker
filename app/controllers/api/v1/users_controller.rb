@@ -57,6 +57,15 @@ module Api
           Ban.where(user_id: user.first.id).where(banned_id: params[:banned_id]).delete_all
         end
       end
+
+      def check
+        auth_user and return
+        result = []
+        ActiveSupport::JSON.decode(request.body.string)["users"].each do |email|
+          result << {'email' => email, 'is_user' => (User.where(email: email).select("email").blank? ? 0 : 1) }
+        end
+        success_response({"users" => result})
+      end
     end
   end
 end
