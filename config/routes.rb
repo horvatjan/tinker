@@ -6,6 +6,7 @@ Rails.application.routes.draw do
     namespace :v1 do
 
       devise_for :users
+      post 'users/fb_connect' => 'registrations#fb_connect'
       post 'users/find' => 'users#index'
       post 'users/ban' => 'users#ban'
       post 'users/edit' => 'users#edit'
@@ -13,7 +14,7 @@ Rails.application.routes.draw do
       post 'users/sign_up' => 'registrations#create'
       post 'users/resend_confirmation_code' => 'users#resend_confirmation_code'
       post 'users/check' => 'users#check'
-      get 'friends/' => 'friends#index'
+      get 'friends/:type' => 'friends#index'
       post 'friends/' => 'friends#create'
       delete 'friends/:id' => 'friends#destroy'
       get 'account_activation/:id' => 'registrations#confirm_email'

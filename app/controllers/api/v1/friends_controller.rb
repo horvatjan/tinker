@@ -6,16 +6,22 @@ module Api
       def index
         auth_user and return
 
-        user = User.where(authentication_token: request.headers[:token])
-        friends = Friend.where(user_id: user.first.id)
-        result = []
-        friends.each do |friend|
-          fr = User.where(id: friend.friend_id).select("id AS user_id, name, email").first
-          result.push fr
+        user = User.where(authentication_token: request.headers[:token]).select("id AS user_id, name, email")
+        if params[:type].to_i == 1
+          result = Friend.where(user_id: user.first.user_id)
+        else
+          result = Friend.where(friend_id: user.first.user_id)
         end
 
-        frnds = {friends: result}
-        success_response(frnds)
+        friends = []
+        friends.push user.first
+        result.each do |friend|
+
+          fr = User.where(id: friend.friend_id).select("id AS user_id, name, email").first
+          friends.push fr
+        end
+
+        success_response({friends: friends})
       end
 
       def create

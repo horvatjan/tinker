@@ -41,7 +41,7 @@ module Api
         end
       end
 
-      def fb_login
+      def fb_connect
 
         require 'uri'
 
