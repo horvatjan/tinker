@@ -1,13 +1,11 @@
-<div class="jumbotron">
-  <h1>Hello world, It's Tinker!</h1>
-  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec maximus erat risus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec vulputate lectus ut ante maximus molestie. Ut blandit vitae diam sit amet faucibus. Nam dictum ante id arcu mollis luctus. Morbi pharetra velit non velit aliquam, ac malesuada elit tincidunt. Nunc dignissim sollicitudin ipsum, quis lobortis massa placerat sit amet. Curabitur ullamcorper magna a nisl cursus, in laoreet enim rhoncus. Nulla varius orci quis orci semper fermentum. Sed eget imperdiet ante, ut tempus enim. Donec commodo pharetra diam, et vulputate dolor egestas at. Nulla suscipit urna ac nulla ullamcorper, vehicula pharetra mauris interdum. Phasellus vulputate cursus velit, vitae ornare est. Vestibulum sit amet nunc dapibus, cursus felis in, bibendum eros.</p>
-  <p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a></p>
-</div>
+<div class="wrapper main">
+  <div class="row">
+    <div class="col-md-4"><img src="/images/icon.png" width="100%" /></div>
+    <div class="col-md-8 main-text">Let your friends know you are thinking of them and put a big smile on their face. You never know who might then do the same for you.</div>
+  </div>
 
-<div class="embed-responsive embed-responsive-16by9">
-  <iframe class="embed-responsive-item" src="//www.youtube.com/embed/blI2dXHyBj0?modestbranding=1&autohide=1&showinfo=0&controls=0" frameborder="0" allowfullscreen></iframe>
-</div>
+  <div class="play-button"><a href="#" data-toggle="modal" data-target="#videoModal"><img src="/images/play.png" /></a></div>
 
-<%= render partial: 'contact_modal' %>
-<%= render partial: 'privacy_modal' %>
-<%= render partial: 'terms_modal' %>
+  <div class="download-appstore-button"><a href="#"><img src="/images/Download_on_the_App_Store_Badge_US-UK_135x40.svg" /></a></div>
+  <%= render partial: 'video_modal' %>
+</div>

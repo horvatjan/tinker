@@ -44,14 +44,6 @@ img {
 // apply styles to HTML elements
 // to make views framework-neutral
 
-main {
-  @extend .container;
-  background-color: #eee;
-  padding: 20px;
-  width: 80%;
-  margin: 0 auto;
-  margin-top: 120px; // accommodate the navbar
-  }
 section {
   @extend .row;
   margin-top: 20px;
@@ -96,12 +88,8 @@ container {
   width: 100%;
 }
 
-footer {
-  text-align: center;
-  background-color: #222222;
-  color: #fff;
-  font-size: 16px;
-  padding: 20px;
+body {
+  background-color: #33ccff;
 }
 
 ul.nav {
@@ -114,7 +102,17 @@ ul.nav a{
 }
 
 .toprightbutton {
-  margin: 30px;
+  margin: 35px 0px 20px 20px;
+}
+
+.navbar {
+  background-color: #33ccff;
+  border: 0px;
+}
+
+.navbar-inverse .navbar-toggle {
+  border-color: red;
+  border: 0px;
 }
 
 .navbar-header {
@@ -122,16 +120,26 @@ ul.nav a{
 }
 
 .btn-xl {
-    padding: 12px 30px;
-    font-size: 22px;
-    border-radius: 8px;
+  padding: 12px 30px;
+  font-size: 22px;
+  margin: 30px;
+  border-radius: 15px;
+  -moz-border-radius: 15px;
+  background-color: #fff;
+  border: 0px #fff;
+  color: #33ccff;
+}
+
+.btn-xl:hover {
+  background-color: #222222;
+  color: #fff;
 }
 
 .apptitle {
-  margin: 20px 0;
+  margin: 20px 0 20px 30px;
   font-size: 48px;
   font-weight: bold;
-  color: #eee;
+  color: #fff;
 }
 
 .modal-title {
@@ -141,4 +149,63 @@ ul.nav a{
 
 .modal-body {
   font-size: 18px;
+}
+
+ul.nav a {
+  color: #fff;
+}
+
+.navbar-inverse .navbar-nav > li > a {
+  color: #fff;
+}
+
+.navbar-inverse .navbar-nav > li > a:hover {
+  color: #222222;
+}
+
+a:hover {
+  text-decoration: none;
+  color: #fff;
+}
+
+.navbar-inverse .navbar-collapse, .navbar-inverse .navbar-form {
+  border: 0px;
+}
+
+.collapsed-menu {
+  border-top: 1px solid #fff;
+  border-bottom: 1px solid #fff;
+}
+
+.wrapper {
+  margin-top: 115px;
+  padding: 20px;
+}
+
+.main {
+  background-color: #33ccff;
+  padding: 0% 20% 5% 20%;
+}
+
+.main-text {
+  padding-top: 25%;
+  font-size: 32px;
+  color: #fff;
+}
+
+.play-button {
+  margin: 10% auto;
+  width: 150px;
+}
+
+.download-appstore-button {
+  margin: 0 auto;
+  width: 135px;
+}
+
+.subpage {
+  background-color: #fff;
+  padding: 5% 20%;
+  font-size: 18px;
+  color: #222222;
 }
