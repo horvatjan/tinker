@@ -35,7 +35,7 @@ module Api
           send_push_notification(t.token, user.first.name, params[:tink][:recipient_id])
         end
 
-        success_response(Tink.where(id: Tink.last.id).select("user_id, recipient_id, read, created_at").first)
+        success_response(Tink.where(id: Tink.last.id).select("user_id, recipient_id, read").first)
       end
 
       def destroy
