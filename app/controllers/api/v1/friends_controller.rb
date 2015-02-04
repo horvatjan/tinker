@@ -7,18 +7,23 @@ module Api
         auth_user and return
 
         user = User.where(authentication_token: request.headers[:token]).select("id AS user_id, name, email")
+        friends = []
         if params[:type].to_i == 1
           result = Friend.where(user_id: user.first.user_id)
+          last_tink = Tink.where(user_id: user.first.user_id, recipient_id: user.first.user_id).select("created_at").last
+          friends << {"user_id" => user.first.user_id, "name" => user.first.name, "email" => user.first.email, "last_tink_created_at" => (last_tink.present? ? last_tink.created_at.strftime("%FT%T%:z") : '')}
         else
           result = Friend.where(friend_id: user.first.user_id)
         end
 
-        friends = []
-        friends.push user.first
         result.each do |friend|
-
           fr = User.where(id: friend.friend_id).select("id AS user_id, name, email").first
-          friends.push fr
+          if params[:type].to_i == 1
+            last_tink = Tink.where(user_id: user.first.user_id, recipient_id: friend.friend_id).select("created_at").last
+          else
+            last_tink = Tink.where(user_id: friend.user_id, recipient_id: user.first.user_id).select("created_at").last
+          end
+          friends << {"user_id" => fr.user_id, "name" => fr.name, "email" => fr.email, "last_tink_created_at" => (last_tink.present? ? last_tink.created_at.strftime("%FT%T%:z") : '')}
         end
 
         success_response({friends: friends})

@@ -8,8 +8,8 @@ class ApplicationController < ActionController::API
 
   def auth_user
     user = User.where(authentication_token: request.headers[:token])
-    return error_response('User does not exist', 101) unless user.present?
-    return error_response('Token has expired', 102) unless (Time.now <= user.first.token_expiration ? true : false)
+    return error_response('Token invalid', 101) unless user.present?
+    return error_response('Token invalid', 101) unless (Time.now <= user.first.token_expiration ? true : false)
   end
 
   protected
