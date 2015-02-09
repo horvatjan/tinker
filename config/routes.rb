@@ -4,10 +4,10 @@ Rails.application.routes.draw do
   get '/contact' => 'pages#contact'
   get '/privacy' => 'pages#privacy'
   get '/terms' => 'pages#terms'
+  get '/account_activation/:id' => 'pages#confirm_email'
 
   namespace :api do
     namespace :v1 do
-
       devise_for :users
       post 'users/fb_connect' => 'registrations#fb_connect'
       post 'users/find' => 'users#index'
@@ -20,7 +20,6 @@ Rails.application.routes.draw do
       get 'friends/:type' => 'friends#index'
       post 'friends/' => 'friends#create'
       delete 'friends/:id' => 'friends#destroy'
-      get 'account_activation/:id' => 'registrations#confirm_email'
       resources :tinks, :defaults => { :format => 'json' }
     end
   end

@@ -6,9 +6,8 @@ module Api
       def index
         auth_user and return
 
-        users = User.select("id AS user_id, name, email").where('name LIKE ?', "%#{params[:keyword]}%").limit(50)
-        result = {users: users}
-        success_response(result)
+        users = User.select("id AS user_id, name, email").where('name ILIKE ?', "%#{params[:keyword]}%").limit(50)
+        success_response({users: users})
       end
 
       def edit

@@ -10,7 +10,7 @@ class UserMailer < ActionMailer::Base
 
   def emailconfirmation(user, email_confirmation_code)
     @user = user
-    @email_confirmation_url = "https://tinkchatapp.herokuapp.com/api/v1/account_activation/" + email_confirmation_code
+    @email_confirmation_url = "https://tinkchatapp.herokuapp.com/account_activation/" + email_confirmation_code
     mail(to: @user.email, subject: 'Tinker Chat: Account activation').deliver
   end
 

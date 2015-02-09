@@ -31,6 +31,7 @@ module Api
           success_response(
             Jbuilder.encode do |j|
               j.auth_token user.authentication_token
+              j.name user.name
             end
           )
         else
