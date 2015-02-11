@@ -8,7 +8,7 @@ module Api
         auth_user and return
 
         user = User.where(authentication_token: request.headers[:token])
-        tinks = Tink.where(recipient_id: user.first.id).select("id, user_id, recipient_id, read, color, created_at")
+        tinks = Tink.where(recipient_id: user.first.id, read: 0).select("id, user_id, recipient_id, read, color, created_at")
         result = []
         tinks.each do |tink|
           sending_user = User.where(id: tink.recipient_id).first
