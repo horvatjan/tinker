@@ -26,7 +26,7 @@ class User < ActiveRecord::Base
   end
 
   def token_expiration_date
-    Time.now + (3*24*60*60)
+    Time.now + (12*60*60)
   end
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
