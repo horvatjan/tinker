@@ -29,7 +29,6 @@ module Api
           #   end
           # )
         else
-          #binding.pry
           if user.errors.messages[:password].present?
             message = 'Password ' + user.errors.messages[:password].first
             code = 103
@@ -42,22 +41,32 @@ module Api
       end
 
       def fb_connect
+        return error_response('Access token is requred', 101) if params[:access_token].blank?
+        return error_response('APNS token is requred', 102) if params[:apns_token].blank?
 
-        require 'uri'
+        response = HTTParty.get("https://graph.facebook.com/me?access_token=#{params[:access_token]}")
 
-            #url = "https://graph.facebook.com/me?access_token="
-              #begin
-                #content = open(url + params[:user][:access_token])
-              #rescue OpenURI::HTTPError #with this I handle if the access token is not ok
-                #return render :json => {:error => "not_good_access_token" }
-              #end
+        return error_response('Access token is invalid', 103) if response["error"].present?
 
+        existing_user = User.where(email: response["email"]).first
 
-          #user_text = URI.escape(user_text)
-          url = "https://graph.facebook.com/me?access_token=#{params[:user][:access_token]}"
-          result = open(url).read
+        if existing_user.present?
+          User.where(email: response["email"]).update_all(fbid: response["id"], active: 1, sign_in_count: (existing_user.sign_in_count + 1), current_sign_in_at: Time.now, last_sign_in_at: Time.now, current_sign_in_ip: request.remote_ip, last_sign_in_ip:request.remote_ip)
+          user = existing_user
+        else
+          user = User.create(fbid: response["id"], email: response["email"], name: response["name"], active: 1, password: Passgen::generate(:pronounceable => true, :uppercase => false, :digits_after => 3), sign_in_count: 1, current_sign_in_at: Time.now, last_sign_in_at: Time.now, current_sign_in_ip: request.remote_ip, last_sign_in_ip:request.remote_ip)
+        end
 
-        binding.pry
+        if params[:apns_token].present?
+          unless ApnsToken.where(user_id: user.id, token: params[:apns_token]).present?
+            if ApnsToken.where(token: params[:apns_token]).present?
+              ApnsToken.destroy_all(:token => params[:apns_token])
+            end
+            ApnsToken.create(user_id: user.id, token: params[:apns_token])
+          end
+        end
+
+        success_response({auth_token: user.authentication_token, name: user.name})
       end
     end
   end

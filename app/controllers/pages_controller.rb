@@ -7,4 +7,9 @@ class PagesController < BaseController
       @text = 'Problems with account activation. Please, try again.'
     end
   end
+
+  def contact
+
+    #binding.pry
+  end
 end

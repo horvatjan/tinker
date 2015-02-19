@@ -130,7 +130,18 @@ ul.nav a{
   color: #33ccff;
 }
 
-.btn-xl:hover {
+.btn-md {
+  padding: 8px 15px;
+  font-size: 18px;
+  margin: 30px 10px;
+  border-radius: 10px;
+  -moz-border-radius: 10px;
+  background-color: #fff;
+  border: 0px #fff;
+  color: #33ccff;
+}
+
+.btn-xl:hover, .btn-md:hover {
   background-color: #222222;
   color: #fff;
 }

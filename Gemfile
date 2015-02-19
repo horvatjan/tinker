@@ -18,7 +18,7 @@ gem 'kaminari' # adds pagination to ActiveModels
 
 gem 'devise'
 
-gem "koala"
+gem 'httparty'
 
 gem 'bcrypt'
 
