@@ -10,7 +10,7 @@ class PagesController < BaseController
 
   def sendmessage
     if Contact.new(message_params).valid?
-      ContactMailer.forward_contact_message(message_params).deliver
+      ContactMailer.forward_contact_message(message_params)
     end
     redirect_to root_path
     return

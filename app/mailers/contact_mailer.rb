@@ -6,7 +6,7 @@ class ContactMailer < ActionMailer::Base
     @subject = message_params[:subject]
     @message = message_params[:message]
     @email = message_params[:email]
-    mail(to: 'jan.horvat@gmail.com', from: @email, subject: @subject).deliver
+    mail(to: 'jan.horvat@gmail.com', from: @email, subject: 'New message from contact form: ' + @subject).deliver
   end
 
 end
