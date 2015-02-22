@@ -26,6 +26,8 @@ gem 'passgen'
 
 gem 'mail'
 
+gem 'mandrill-rails'
+
 gem 'houston'
 
 gem 'rails_layout'
