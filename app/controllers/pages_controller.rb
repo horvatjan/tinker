@@ -8,8 +8,18 @@ class PagesController < BaseController
     end
   end
 
-  def contact
-
-    #binding.pry
+  def sendmessage
+    if Contact.new(message_params).valid?
+      ContactMailer.forward_contact_message(message_params).deliver
+    end
+    redirect_to root_path
+    return
   end
+
+  private
+    def message_params
+      final_params = params.permit(:subject, :email, :message)
+      final_params
+    end
+
 end
