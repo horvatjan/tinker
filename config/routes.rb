@@ -20,6 +20,7 @@ Rails.application.routes.draw do
       post 'users/check' => 'users#check'
       get 'friends/:type' => 'friends#index'
       post 'friends/' => 'friends#create'
+      post 'friends/invite' => 'friends#invite'
       delete 'friends/:id' => 'friends#destroy'
       resources :tinks, :defaults => { :format => 'json' }
     end

@@ -29,6 +29,19 @@ module Api
         success_response({friends: friends})
       end
 
+      def invite
+        auth_user and return
+
+        user = User.where(authentication_token: request.headers[:token])
+
+        return error_response("Invitee's email is requred", 102) unless params[:email].present?
+        return error_response("User has already been invited", 103) if Invite.where(invitee: params[:email]).present?
+
+        Invite.create(user_id: user.first.id, invitee: params[:email])
+
+        FriendMailer.send_invite(user, params[:email])
+      end
+
       def create
         auth_user and return
 

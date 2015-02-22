@@ -41,12 +41,11 @@ module Api
       end
 
       def fb_connect
-        return error_response('Access token is requred', 101) if params[:access_token].blank?
-        return error_response('APNS token is requred', 102) if params[:apns_token].blank?
+        return error_response('Access token is requred', 101) if params[:user][:access_token].blank?
 
-        response = HTTParty.get("https://graph.facebook.com/me?access_token=#{params[:access_token]}")
+        response = HTTParty.get("https://graph.facebook.com/me?access_token=#{params[:user][:access_token]}")
 
-        return error_response('Access token is invalid', 103) if response["error"].present?
+        return error_response('Access token is invalid', 102) if response["error"].present?
 
         existing_user = User.where(email: response["email"]).first
 
@@ -57,12 +56,12 @@ module Api
           user = User.create(fbid: response["id"], email: response["email"], name: response["name"], active: 1, password: Passgen::generate(:pronounceable => true, :uppercase => false, :digits_after => 3), sign_in_count: 1, current_sign_in_at: Time.now, last_sign_in_at: Time.now, current_sign_in_ip: request.remote_ip, last_sign_in_ip:request.remote_ip)
         end
 
-        if params[:apns_token].present?
-          unless ApnsToken.where(user_id: user.id, token: params[:apns_token]).present?
-            if ApnsToken.where(token: params[:apns_token]).present?
-              ApnsToken.destroy_all(:token => params[:apns_token])
+        if params[:user][:apns_token].present?
+          unless ApnsToken.where(user_id: user.id, token: params[:user][:apns_token]).present?
+            if ApnsToken.where(token: params[:user][:apns_token]).present?
+              ApnsToken.destroy_all(:token => params[:user][:apns_token])
             end
-            ApnsToken.create(user_id: user.id, token: params[:apns_token])
+            ApnsToken.create(user_id: user.id, token: params[:user][:apns_token])
           end
         end
 
