@@ -35,7 +35,7 @@ module Api
         user = User.where(authentication_token: request.headers[:token])
 
         return error_response("Invitee's email is requred", 102) unless params[:email].present?
-        return error_response("User has already been invited", 103) if Invite.where(invitee: params[:email]).present?
+        #return error_response("User has already been invited", 103) if Invite.where(invitee: params[:email]).present?
 
         Invite.create(user_id: user.first.id, invitee: params[:email])
 
