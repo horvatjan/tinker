@@ -6,6 +6,7 @@ module Api
 
       def create
         return error_response('Name is requred', 103) if user_params[:name].blank?
+        return error_response('Password is requred', 104) if user_params[:password].blank?
 
         user = User.new(user_params)
         if user.save

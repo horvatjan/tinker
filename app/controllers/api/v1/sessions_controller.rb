@@ -7,11 +7,13 @@ module Api
       skip_before_filter :verify_authenticity_token
 
       def create
+        return error_response('Email is requred', 104) if params[:user][:email].blank?
+        return error_response('Password is required', 104) if params[:user][:password].blank?
         build_resource
         user = User.find_for_database_authentication(
           email: params[:user][:email]
         )
-        return error_response('User with this email does not exist', 101) unless user
+        return error_response('Email and password do not match', 101) unless user
 
 
         if user.valid_password?(params[:user][:password])
@@ -35,7 +37,7 @@ module Api
             end
           )
         else
-          error_response('Email and password do not match', 102)
+          error_response('Email and password do not match', 101)
         end
       end
 
