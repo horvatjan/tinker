@@ -8,7 +8,7 @@ module Api
 
       def create
         return error_response('Email is requred', 104) if params[:user][:email].blank?
-        return error_response('Password is required', 104) if params[:user][:password].blank?
+        return error_response('Password is required', 105) if params[:user][:password].blank?
         build_resource
         user = User.find_for_database_authentication(
           email: params[:user][:email]
