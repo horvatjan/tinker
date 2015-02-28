@@ -32,7 +32,7 @@ module Api
         else
           if user.errors.messages[:password].present?
             message = 'Password ' + user.errors.messages[:password].first
-            code = 103
+            code = 105
           else
             message = 'Email ' + user.errors.messages[:email].first
             code = (user.errors.messages[:email].first == "can't be blank" ? 101 : 102)

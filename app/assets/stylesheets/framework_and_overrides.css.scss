@@ -2,6 +2,11 @@
 @import "bootstrap-sprockets";
 @import "bootstrap";
 
+@media (min-width: 768px) and (max-width: 1000px) {
+   .collapse {
+       display: none !important;
+   }
+}
 
 @font-face {
   font-family: 'Bariol_Regular';
@@ -98,7 +103,7 @@ ul.nav {
 
 ul.nav a{
   font-size: 22px;
-  margin-right: 50px;
+  margin-right: 12px;
 }
 
 .toprightbutton {
@@ -108,6 +113,7 @@ ul.nav a{
 .navbar {
   background-color: #33ccff;
   border: 0px;
+  margin-bottom: 0px;
 }
 
 .navbar-inverse .navbar-toggle {
@@ -188,7 +194,6 @@ a:hover {
 }
 
 .wrapper {
-  margin-top: 115px;
   padding: 20px;
 }
 

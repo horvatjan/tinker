@@ -17,10 +17,11 @@ module Api
         end
 
         result.each do |friend|
-          fr = User.where(id: friend.friend_id).select("id AS user_id, name, email").first
           if params[:type].to_i == 1
+            fr = User.where(id: friend.friend_id).select("id AS user_id, name, email").first
             last_tink = Tink.where(user_id: user.first.user_id, recipient_id: friend.friend_id).select("created_at").last
           else
+            fr = User.where(id: friend.user_id).select("id AS user_id, name, email").first
             last_tink = Tink.where(user_id: friend.user_id, recipient_id: user.first.user_id).select("created_at").last
           end
           friends << {"user_id" => fr.user_id, "name" => fr.name, "email" => fr.email, "last_tink_created_at" => (last_tink.present? ? last_tink.created_at.strftime("%FT%T%:z") : '')}
