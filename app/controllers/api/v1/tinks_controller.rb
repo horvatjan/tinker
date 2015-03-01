@@ -58,7 +58,7 @@ module Api
           connection.open
 
           notification = Houston::Notification.new(device: apn_token)
-          notification.alert = "#{sender_name} has send you tink."
+          notification.alert = "#{sender_name} just thought of you."
           notification.badge = Tink.where(recipient_id: recipient_id, read: 0).count
           notification.sound = "alertsound.aiff"
           notification.content_available = false
