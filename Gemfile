@@ -4,7 +4,7 @@ gem 'rails', '4.1.5'
 
 gem 'rails-api'
 
-
+gem 'puma'
 
 gem 'mina'
 
@@ -48,8 +48,6 @@ gem 'uglifier'
 
 group :development do
   gem 'pry'
-
-  gem 'puma'
 end
 
 gem 'rails_12factor', group: :production
@@ -63,7 +61,7 @@ ruby "2.1.3"
 # gem 'jbuilder'
 
 # Use unicorn as the app server
- gem 'unicorn'
+# gem 'unicorn'
 
 # Deploy with Capistrano
 # gem 'capistrano', :group => :development
