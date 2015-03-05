@@ -2,17 +2,17 @@ module Api
   module V1
     class API::V1::TinksController < ApplicationController
       include Api::V1::Concerns::Response
-      require 'houston'
+      include Api::V1::Concerns::Push
 
       def index
         auth_user and return
 
         user = User.where(authentication_token: request.headers[:token])
-        tinks = Tink.where(recipient_id: user.first.id, read: 0).select("id, user_id, recipient_id, read, color, created_at").order(created_at: :desc)
+        tinks = Tink.where(recipient_id: user.first.id, read: 0).select("id, user_id, recipient_id, read, color, created_at, text").order(created_at: :desc)
         result = []
         tinks.each do |tink|
           sending_user = User.where(id: tink.user_id).first
-          res = {sender_name: sending_user.name, sender_id: sending_user.id, tink_id: tink.id, read: tink.read, created_at: tink.created_at.strftime("%FT%T%:z"), color: tink.color}
+          res = {sender_name: sending_user.name, sender_id: sending_user.id, tink_id: tink.id, read: tink.read, created_at: tink.created_at.strftime("%FT%T%:z"), color: tink.color, text: tink.text}
           result.push res
         end
         result = {tinks: result}
@@ -29,13 +29,14 @@ module Api
         return error_response('Recipient has been banned', 105) unless Ban.where(user_id: user.first.id, banned_id: params[:tink][:recipient_id]).empty?
 
         color = get_color(params[:tink][:recipient_id])
-        Tink.create(user_id: user.first.id, recipient_id: params[:tink][:recipient_id], read: 0, color: color)
+        text = "#{user.first.name} just thought of you."
+        Tink.create(user_id: user.first.id, recipient_id: params[:tink][:recipient_id], read: 0, color: color, text: text)
 
         ApnsToken.where(user_id: params[:tink][:recipient_id]).each do |t|
-          send_push_notification(t.token, user.first.name, params[:tink][:recipient_id])
+          send_push_notification(t.token, params[:tink][:recipient_id], text)
         end
 
-        success_response(Tink.where(id: Tink.last.id).select("user_id, recipient_id, read").first)
+        success_response(Tink.where(id: Tink.last.id).select("user_id, recipient_id, read, text").first)
       end
 
       def destroy
@@ -49,32 +50,32 @@ module Api
         tink.update(read: "1")
       end
 
-      private
+      # private
 
-        def send_push_notification(apn_token, sender_name, recipient_id)
-          certificate = File.read("lib/apns-development.pem")
-          passphrase = ""
-          connection = Houston::Connection.new(Houston::APPLE_DEVELOPMENT_GATEWAY_URI, certificate, passphrase)
-          connection.open
+      #   def send_push_notification(apn_token, sender_name, recipient_id)
+      #     certificate = File.read("lib/apns-development.pem")
+      #     passphrase = ""
+      #     connection = Houston::Connection.new(Houston::APPLE_DEVELOPMENT_GATEWAY_URI, certificate, passphrase)
+      #     connection.open
 
-          notification = Houston::Notification.new(device: apn_token)
-          notification.alert = "#{sender_name} just thought of you."
-          notification.badge = Tink.where(recipient_id: recipient_id, read: 0).count
-          notification.sound = "alertsound.aiff"
-          notification.content_available = false
-          connection.write(notification.message)
+      #     notification = Houston::Notification.new(device: apn_token)
+      #     notification.alert = "#{sender_name} just thought of you."
+      #     notification.badge = Tink.where(recipient_id: recipient_id, read: 0).count
+      #     notification.sound = "alertsound.aiff"
+      #     notification.content_available = false
+      #     connection.write(notification.message)
 
-          connection.close
-        end
+      #     connection.close
+      #   end
 
-        def get_color(recipient_id)
-          tink = Tink.where(recipient_id: recipient_id).select('color').last
-          if tink.present?
-            ([*1..6] - [tink.color]).sample
-          else
-            ([*1..6]).sample
-          end
-        end
+      #   def get_color(recipient_id)
+      #     tink = Tink.where(recipient_id: recipient_id).select('color').last
+      #     if tink.present?
+      #       ([*1..6] - [tink.color]).sample
+      #     else
+      #       ([*1..6]).sample
+      #     end
+      #   end
     end
   end
 end

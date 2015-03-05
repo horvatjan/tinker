@@ -2,6 +2,7 @@ module Api
   module V1
     class API::V1::FriendsController < ApplicationController
       include Api::V1::Concerns::Response
+      include Api::V1::Concerns::Push
 
       def index
         auth_user and return
@@ -54,9 +55,18 @@ module Api
         return error_response('You are already friends with this user', 106) unless Friend.where(user_id: user.first.id, friend_id: params[:friend_id]).blank?
 
         friend = Friend.create(user_id: user.first.id, friend_id: params[:friend_id])
-        result = {user_id: friend[:user_id], friend_id: friend[:friend_id]}
 
-        success_response(result)
+
+
+        color = get_color(params[:friend_id])
+        text = "#{user.first.name} just added you."
+        Tink.create(user_id: user.first.id, recipient_id: params[:friend_id], read: 0, color: color, text: text)
+
+        ApnsToken.where(user_id: params[:friend_id]).each do |t|
+          send_push_notification(t.token, params[:tink][:recipient_id], text)
+        end
+
+        success_response({user_id: friend[:user_id], friend_id: friend[:friend_id], text: text})
       end
 
       def destroy
