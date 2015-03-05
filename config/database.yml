@@ -1,20 +1,3 @@
-# development:
-#   adapter: mysql2
-#   encoding: utf8
-#   database: tinker_development
-#   host: localhost
-#   pool: 10
-#   username: dlabs
-#   password: dlabs
-
-# production:
-#   adapter: mysql2
-#   encoding: utf8
-#   database: tinker_production
-#   pool: 10
-#   username: dlabs
-#   password: dlabs
-
 development:
   adapter: postgresql
   encoding: unicode

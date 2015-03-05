@@ -6,7 +6,7 @@ class ContactMailer < ActionMailer::Base
     @subject = message_params[:subject]
     @message = message_params[:message]
     @email = message_params[:email]
-    mail(to: 'TinkchatApp@gmail.com', from: @email, subject: 'New message: ' + @subject).deliver
+    mail(to: 'jan.horvat@gmail.com', from: @email, subject: 'New message: ' + @subject).deliver
   end
 
 end
