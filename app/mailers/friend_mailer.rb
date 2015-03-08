@@ -1,6 +1,6 @@
 class FriendMailer < ActionMailer::Base
 
-  default from: 'no-reply@tinkerchat.com'
+  default from: 'no-reply@tinkchatapp.com'
 
   def send_invite(user, invitee)
     @user_name = user.first.name

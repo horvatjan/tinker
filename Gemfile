@@ -18,6 +18,8 @@ gem 'kaminari' # adds pagination to ActiveModels
 
 gem 'devise'
 
+gem 'dotenv-rails'
+
 gem 'httparty'
 
 gem 'bcrypt'

@@ -1,6 +1,6 @@
 class UserMailer < ActionMailer::Base
 
-  default from: 'no-reply@tinkerchat.com'
+  default from: 'no-reply@tinkchatapp.com'
 
   def newpassword(user, password)
     @user = user
@@ -10,7 +10,7 @@ class UserMailer < ActionMailer::Base
 
   def emailconfirmation(user, email_confirmation_code)
     @user = user
-    @email_confirmation_url = "https://tinkchatapp.herokuapp.com/account_activation/" + email_confirmation_code
+    @email_confirmation_url = ENV['MANDRILL_HOST']+"account_activation/" + email_confirmation_code
     mail(to: @user.email, subject: 'Tinker Chat: Account activation').deliver
   end
 
