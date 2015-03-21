@@ -30,6 +30,20 @@ module Api
         UserMailer.newpassword(user, new_password)
       end
 
+      def change_password
+        require 'bcrypt'
+        auth_user and return
+
+        user = User.find_for_database_authentication(authentication_token: request.headers[:token])
+
+        return error_response('Old password is not correct', 102) unless user.valid_password?(params[:old_password])
+        return error_response('New password is too short (6 characters minimum)', 103) unless params[:new_password].length >= 6
+
+        User.where(id: user.id).update_all(
+          encrypted_password: BCrypt::Password.create(params[:new_password])
+        )
+      end
+
       def resend_confirmation_code
         return error_response('Email address not provided', 101) unless params[:user][:email].present?
         user = User.where(email: params[:user][:email]).first

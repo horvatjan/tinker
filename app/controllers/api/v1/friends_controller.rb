@@ -12,7 +12,15 @@ module Api
         if params[:type].to_i == 1
           result = Friend.where(user_id: user.first.user_id)
           last_tink = Tink.where(user_id: user.first.user_id, recipient_id: user.first.user_id).select("created_at").last
-          friends << {"user_id" => user.first.user_id, "name" => user.first.name, "email" => user.first.email, "last_tink_created_at" => (last_tink.present? ? last_tink.created_at.strftime("%FT%T%:z") : '')}
+          amount = Tink.where(user_id: user.first.user_id, recipient_id: user.first.user_id).count
+          friends << {
+            "user_id" => user.first.user_id,
+            "name" => user.first.name,
+            "email" => user.first.email,
+            "last_tink_created_at" => (last_tink.present? ? last_tink.created_at.strftime("%FT%T%:z") : ''),
+            "amount_to" => amount,
+            "amount_from" => amount,
+          }
         else
           result = Friend.where(friend_id: user.first.user_id)
         end
@@ -21,11 +29,22 @@ module Api
           if params[:type].to_i == 1
             fr = User.where(id: friend.friend_id).select("id AS user_id, name, email").first
             last_tink = Tink.where(user_id: user.first.user_id, recipient_id: friend.friend_id).select("created_at").last
+            amount_to = Tink.where(user_id: user.first.user_id, recipient_id: friend.friend_id).count
+            amount_from = Tink.where(user_id: friend.friend_id, recipient_id: user.first.user_id).count
           else
             fr = User.where(id: friend.user_id).select("id AS user_id, name, email").first
             last_tink = Tink.where(user_id: friend.user_id, recipient_id: user.first.user_id).select("created_at").last
+            amount_to = Tink.where(user_id: user.first.user_id, recipient_id: friend.user_id).count
+            amount_from = Tink.where(user_id: friend.user_id, recipient_id: user.first.user_id).count
           end
-          friends << {"user_id" => fr.user_id, "name" => fr.name, "email" => fr.email, "last_tink_created_at" => (last_tink.present? ? last_tink.created_at.strftime("%FT%T%:z") : '')}
+          friends << {
+            "user_id" => fr.user_id,
+            "name" => fr.name,
+            "email" => fr.email,
+            "last_tink_created_at" => (last_tink.present? ? last_tink.created_at.strftime("%FT%T%:z") : ''),
+            "amount_to" => amount_to,
+            "amount_from" => amount_from,
+          }
         end
 
         success_response({friends: friends})

@@ -15,6 +15,7 @@ Rails.application.routes.draw do
       post 'users/ban' => 'users#ban'
       post 'users/edit' => 'users#edit'
       post 'users/new_password' => 'users#new_password'
+      post 'users/change_password' => 'users#change_password'
       post 'users/sign_up' => 'registrations#create'
       post 'users/resend_confirmation_code' => 'users#resend_confirmation_code'
       post 'users/check' => 'users#check'
@@ -22,6 +23,7 @@ Rails.application.routes.draw do
       post 'friends/' => 'friends#create'
       post 'friends/invite' => 'friends#invite'
       delete 'friends/:id' => 'friends#destroy'
+      post 'messages' => 'messages#create'
       resources :tinks, :defaults => { :format => 'json' }
     end
   end
