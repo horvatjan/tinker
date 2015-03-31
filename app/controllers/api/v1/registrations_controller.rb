@@ -20,6 +20,8 @@ module Api
             end
           end
 
+          Friend.create(user_id: User.last.id, friend_id: 0)
+
           email_confirmation_code = rand(36**20).to_s(36)
           User.where(id: User.last.id).update_all(email_confirmation_code: email_confirmation_code)
           UserMailer.emailconfirmation(user, email_confirmation_code)
