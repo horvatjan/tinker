@@ -4,7 +4,7 @@ class PagesController < BaseController
 
     if User.where(email_confirmation_code: params[:id]).present?
       User.where(email_confirmation_code: params[:id]).update_all(active: 1)
-      @text = 'Your email address has been confirmed.'
+      @text = 'Profile completed! When you sign in we will interactively show you how to add and tink your friends.'
     else
       @text = 'Problems with account activation. Please, try again.'
     end

@@ -29,7 +29,7 @@ module Api
         return error_response('Recipient has been banned', 105) unless Ban.where(user_id: user.first.id, banned_id: params[:tink][:recipient_id]).empty?
 
         color = get_color(params[:tink][:recipient_id])
-        text = "#{user.first.name} just thought of you."
+        text = "#{user.first.name} is thinking of you."
         Tink.create(user_id: user.first.id, recipient_id: params[:tink][:recipient_id], read: 0, color: color, text: text)
 
         ApnsToken.where(user_id: params[:tink][:recipient_id]).each do |t|
@@ -49,33 +49,6 @@ module Api
 
         tink.update(read: "1")
       end
-
-      # private
-
-      #   def send_push_notification(apn_token, sender_name, recipient_id)
-      #     certificate = File.read("lib/apns-development.pem")
-      #     passphrase = ""
-      #     connection = Houston::Connection.new(Houston::APPLE_DEVELOPMENT_GATEWAY_URI, certificate, passphrase)
-      #     connection.open
-
-      #     notification = Houston::Notification.new(device: apn_token)
-      #     notification.alert = "#{sender_name} just thought of you."
-      #     notification.badge = Tink.where(recipient_id: recipient_id, read: 0).count
-      #     notification.sound = "alertsound.aiff"
-      #     notification.content_available = false
-      #     connection.write(notification.message)
-
-      #     connection.close
-      #   end
-
-      #   def get_color(recipient_id)
-      #     tink = Tink.where(recipient_id: recipient_id).select('color').last
-      #     if tink.present?
-      #       ([*1..6] - [tink.color]).sample
-      #     else
-      #       ([*1..6]).sample
-      #     end
-      #   end
     end
   end
 end

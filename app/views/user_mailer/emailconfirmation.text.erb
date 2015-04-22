@@ -1,3 +1,12 @@
-Click on link below to activate your account.
-<%= @email_confirmation_url %>
-Thank you for using Tinkchat!
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <p>We are psyched you decided to try Tinkchat.</p>
+    <a href="<%= @email_confirmation_url %>">Click here to complete your profile.</a>
+    <p>Have a great day,<br>
+    Tinkchat Team</p>
+  </body>
+</html>
