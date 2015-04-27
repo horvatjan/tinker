@@ -2,6 +2,7 @@ Rails.application.routes.draw do
 
   root 'pages#index'
   get '/contact' => 'pages#contact'
+  get '/contact/:subject' => 'pages#contact'
   post '/sendmessage' => 'pages#sendmessage'
   get '/privacy' => 'pages#privacy'
   get '/terms' => 'pages#terms'
