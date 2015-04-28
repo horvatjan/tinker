@@ -17,3 +17,6 @@
 /log/*.log
 /tmp
 .env
+
+# Ignore git files
+.git-old
