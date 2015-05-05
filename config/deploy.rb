@@ -11,7 +11,7 @@ require 'mina/git'
 #   branch       - Branch name to deploy. (needed by mina/git)
 set :rails_env, 'production'
 set :domain, '188.226.214.215'
-set :deploy_to, '/var/www/tinkchatapp'
+set :deploy_to, '/home/tinkchatapp'
 set :repository, 'https://github.com/janhorvat/tinker'
 set :branch, 'master'
 set :user, 'root'
