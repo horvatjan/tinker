@@ -17,8 +17,10 @@ module Api
 
 
         if user.valid_password?(params[:user][:password])
-
-          return error_response('Your account has not been activated yet', 103) if user.active == 0
+          if user.active == 0
+            UserMailer.emailconfirmation(user, user.email_confirmation_code)
+            return error_response('Your account has not been activated yet', 103)
+          end
 
           if params[:user][:apns_token].present?
             unless ApnsToken.where(user_id: user.id, token: params[:user][:apns_token]).present?
