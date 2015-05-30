@@ -2,20 +2,44 @@ module Api
   module V1
     class API::V1::UsersController < ApplicationController
       include Api::V1::Concerns::Response
+      include Api::V1::Concerns::ValidateUsername
 
       def index
         auth_user and return
 
-        users = User.select("id AS user_id, name, email").where('name || email ILIKE ?', "%#{params[:keyword]}%").limit(50)
+        condition = ""
+        if params[:keyword] =~ /[@.]/
+          condition = "email_visibility = 1 AND"
+        end
+
+        users = User.select("id AS user_id, name, email, username").where("#{condition} name || email || username ILIKE ?", "%#{params[:keyword]}%").limit(50)
         success_response({users: users})
       end
 
       def edit
         auth_user and return
 
-        return error_response('New name is requred', 103) unless params[:user][:name].present?
+        user = User.find_for_database_authentication(authentication_token: request.headers[:token])
 
-        User.where(authentication_token: request.headers[:token]).update_all(name: params[:user][:name])
+        name = user.name
+        if (user.name != params[:user][:name] && params[:user][:name].present?)
+          name = params[:user][:name]
+        end
+
+        username = user.username
+        if (user.username != params[:user][:username] && params[:user][:username].present?)
+          return error_response('Username is invalid', 102) unless check_username(params[:user][:username])
+          return error_response('Username is already in use', 103) unless unique(params[:user][:username])
+          username = params[:user][:username]
+        end
+
+        email_visibility = user.email_visibility
+        if (user.email_visibility != params[:user][:email_visibility] && params[:user][:email_visibility].present?)
+          email_visibility = params[:user][:email_visibility]
+        end
+
+        User.where(authentication_token: request.headers[:token]).update_all(name: name, username: username, email_visibility: email_visibility)
+        success_response(name: name, username: username, email_visibility: email_visibility)
       end
 
       def new_password

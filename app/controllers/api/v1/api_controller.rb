@@ -7,7 +7,7 @@ module Api
       protected
 
       def user_params
-        params[:user].permit(:email, :name, :password, :password_confirmation)
+        params[:user].permit(:email, :name, :password, :password_confirmation, :username)
       end
     end
   end

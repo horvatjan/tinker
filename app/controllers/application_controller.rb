@@ -15,6 +15,6 @@ class ApplicationController < ActionController::API
   protected
 
   def user_params
-    params[:user].permit(:email, :password, :password_confirmation)
+    params[:user].permit(:email, :password, :password_confirmation, :username)
   end
 end

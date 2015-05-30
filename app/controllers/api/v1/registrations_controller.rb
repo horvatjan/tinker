@@ -2,13 +2,19 @@ module Api
   module V1
     class API::V1::RegistrationsController < ApiController
       include Api::V1::Concerns::Response
+      include Api::V1::Concerns::ValidateUsername
+
       skip_before_filter :verify_authenticity_token
 
       def create
         return error_response('Name is requred', 103) if user_params[:name].blank?
         return error_response('Password is requred', 104) if user_params[:password].blank?
+        return error_response('Username is requred', 106) if user_params[:username].blank?
+        return error_response('Username is invalid', 107) unless check_username(user_params[:username])
+        return error_response('Username is already in use', 108) unless unique(user_params[:username])
 
         user = User.new(user_params)
+
         if user.save
 
           if params[:user][:apns_token].present?
@@ -56,7 +62,7 @@ module Api
           User.where(email: response["email"]).update_all(fbid: response["id"], active: 1, sign_in_count: (existing_user.sign_in_count + 1), current_sign_in_at: Time.now, last_sign_in_at: Time.now, current_sign_in_ip: request.remote_ip, last_sign_in_ip:request.remote_ip)
           user = existing_user
         else
-          user = User.create(fbid: response["id"], email: response["email"], name: response["name"], active: 1, password: Passgen::generate(:pronounceable => true, :uppercase => false, :digits_after => 3), sign_in_count: 1, current_sign_in_at: Time.now, last_sign_in_at: Time.now, current_sign_in_ip: request.remote_ip, last_sign_in_ip:request.remote_ip)
+          user = User.create(fbid: response["id"], email: response["email"], name: response["name"], username: response["username"], active: 1, password: Passgen::generate(:pronounceable => true, :uppercase => false, :digits_after => 3), sign_in_count: 1, current_sign_in_at: Time.now, last_sign_in_at: Time.now, current_sign_in_ip: request.remote_ip, last_sign_in_ip:request.remote_ip)
         end
 
         if params[:user][:apns_token].present?

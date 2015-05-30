@@ -36,6 +36,8 @@ module Api
             Jbuilder.encode do |j|
               j.auth_token user.authentication_token
               j.name user.name
+              j.username user.username
+              j.email_visibility user.email_visibility
             end
           )
         else
