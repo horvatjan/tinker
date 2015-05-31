@@ -2,16 +2,15 @@ module Api
   module V1
     class API::V1::RegistrationsController < ApiController
       include Api::V1::Concerns::Response
-      include Api::V1::Concerns::ValidateUsername
 
       skip_before_filter :verify_authenticity_token
 
       def create
-        return error_response('Name is requred', 103) if user_params[:name].blank?
+
         return error_response('Password is requred', 104) if user_params[:password].blank?
-        return error_response('Username is requred', 106) if user_params[:username].blank?
-        return error_response('Username is invalid', 107) unless check_username(user_params[:username])
-        return error_response('Username is already in use', 108) unless unique(user_params[:username])
+
+        params[:user][:username] = Array.new(10){rand(36).to_s(36)}.join
+        params[:user][:name] = Array.new(10){rand(36).to_s(36)}.join
 
         user = User.new(user_params)
 
