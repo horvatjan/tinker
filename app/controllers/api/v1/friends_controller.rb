@@ -62,9 +62,11 @@ module Api
         if friend.present?
           return error_response('You are already friends with this user', 104) unless Friend.where(user_id: user.first.id, friend_id: friend.first.id).blank?
           new_friend(user, friend.first.id)
+          success_response({type: "existing_friend", name: friend.first.name, username: friend.first.username})
         else
           Invite.create(user_id: user.first.id, invitee: params[:email])
           FriendMailer.send_invite(user, params[:email])
+          success_response({type: "invited_friend", email: params[:email]})
         end
       end
 

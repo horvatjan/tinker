@@ -7,13 +7,19 @@ module Api
       def index
         auth_user and return
 
-        condition = ""
-        if params[:keyword] =~ /[@.]/
-          condition = "email_visibility = 1 AND"
+        by_name_username = User.select("id, name, email, username").where("name || username ILIKE ?", "%#{params[:keyword]}%").limit(50)
+        by_email = User.select("id, name, email, username").where("email_visibility = 1 AND email ILIKE ?", "%#{params[:keyword]}%").limit(50)
+
+        response = []
+        by_name_username.each do |user|
+          response << user
         end
 
-        users = User.select("id AS user_id, name, email, username").where("#{condition} name || email || username ILIKE ?", "%#{params[:keyword]}%").limit(50)
-        success_response({users: users})
+        by_email.each do |user|
+          response << user
+        end
+
+        success_response({users: response.uniq})
       end
 
       def edit
