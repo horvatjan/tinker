@@ -7,8 +7,8 @@ module Api
       def index
         auth_user and return
 
-        by_name_username = User.select("id AS user_id, name, email, username").where("name || username ILIKE ?", "%#{params[:keyword]}%").limit(50)
-        by_email = User.select("id AS user_id, name, email, username").where("email_visibility = 1 AND email ILIKE ?", "%#{params[:keyword]}%").limit(50)
+        by_name_username = User.select("id, name, email, username").where("name || username ILIKE ?", "%#{params[:keyword]}%").limit(50)
+        by_email = User.select("id, name, email, username").where("email_visibility = 1 AND email ILIKE ?", "%#{params[:keyword]}%").limit(50)
 
         response = []
         by_name_username.each do |user|
@@ -19,7 +19,20 @@ module Api
           response << user
         end
 
-        success_response({users: response.uniq})
+        response = response.uniq
+
+        result = []
+        response.each do |item|
+          user = {
+            user_id: item.id,
+            name: item.name,
+            email: item.email,
+            username: item.username
+          }
+          result << user
+        end
+
+        success_response({users: response})
       end
 
       def edit
