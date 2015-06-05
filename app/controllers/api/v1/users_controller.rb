@@ -32,7 +32,7 @@ module Api
           result << user
         end
 
-        success_response({users: response})
+        success_response({users: result})
       end
 
       def edit
