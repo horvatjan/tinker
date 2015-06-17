@@ -28,4 +28,13 @@ module Api::V1::Concerns::ValidateUsername
       end
       return false
     end
+
+    def check_name(name)
+      if name.length > 3
+        if name.length < 25
+          return true
+        end
+      end
+      return false
+    end
 end

@@ -42,6 +42,7 @@ module Api
 
         name = user.name
         if (user.name != params[:user][:name] && params[:user][:name].present?)
+          return error_response("Name's length must be between 4 and 24 characters", 104) unless check_name(params[:user][:name])
           name = params[:user][:name]
         end
 
