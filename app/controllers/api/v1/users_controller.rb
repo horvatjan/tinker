@@ -58,8 +58,13 @@ module Api
           email_visibility = params[:user][:email_visibility]
         end
 
-        User.where(authentication_token: request.headers[:token]).update_all(name: name, username: username, email_visibility: email_visibility)
-        success_response(name: name, username: username, email_visibility: email_visibility)
+        registration_status = user.registration_status
+        if (user.registration_status != params[:user][:registration_status] && params[:user][:registration_status].present?)
+          registration_status = params[:user][:registration_status]
+        end
+
+        User.where(authentication_token: request.headers[:token]).update_all(name: name, username: username, email_visibility: email_visibility, registration_status: registration_status)
+        success_response(name: name, username: username, email_visibility: email_visibility, registration_status: registration_status)
       end
 
       def new_password

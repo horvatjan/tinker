@@ -38,6 +38,7 @@ module Api
               j.name user.name
               j.username user.username
               j.email_visibility user.email_visibility
+              j.registration_status user.registration_status
             end
           )
         else
