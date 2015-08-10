@@ -29,11 +29,10 @@ module Api
         return error_response('Recipient has been banned', 105) unless Ban.where(user_id: user.first.id, banned_id: params[:tink][:recipient_id]).empty?
 
         color = get_color(params[:tink][:recipient_id])
-        text = "#{user.first.name} is thinking of you."
-        Tink.create(user_id: user.first.id, recipient_id: params[:tink][:recipient_id], read: 0, color: color, text: text)
+        Tink.create(user_id: user.first.id, recipient_id: params[:tink][:recipient_id], read: 0, color: color, text: "#{user.first.name} is thinking of you.")
 
         ApnsToken.where(user_id: params[:tink][:recipient_id]).each do |t|
-          send_push_notification(t.token, params[:tink][:recipient_id], text)
+          send_push_notification(t.token, params[:tink][:recipient_id], "Someone is thinking of you.")
         end
 
         success_response(Tink.where(id: Tink.last.id).select("user_id, recipient_id, read, text").first)

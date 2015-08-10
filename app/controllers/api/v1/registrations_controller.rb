@@ -61,7 +61,18 @@ module Api
           User.where(email: response["email"]).update_all(fbid: response["id"], active: 1, sign_in_count: (existing_user.sign_in_count + 1), current_sign_in_at: Time.now, last_sign_in_at: Time.now, current_sign_in_ip: request.remote_ip, last_sign_in_ip:request.remote_ip)
           user = existing_user
         else
-          user = User.create(fbid: response["id"], email: response["email"], name: response["name"], username: response["username"], active: 1, password: Passgen::generate(:pronounceable => true, :uppercase => false, :digits_after => 3), sign_in_count: 1, current_sign_in_at: Time.now, last_sign_in_at: Time.now, current_sign_in_ip: request.remote_ip, last_sign_in_ip:request.remote_ip)
+          user = User.create(
+            fbid: response["id"],
+            email: response["email"],
+            name: response["name"],
+            username: response["username"],
+            active: 1, password: Passgen::generate(:pronounceable => true, :uppercase => false, :digits_after => 3),
+            sign_in_count: 1,
+            current_sign_in_at: Time.now,
+            last_sign_in_at: Time.now,
+            current_sign_in_ip: request.remote_ip,
+            last_sign_in_ip:request.remote_ip
+          )
         end
 
         if params[:user][:apns_token].present?
@@ -73,7 +84,13 @@ module Api
           end
         end
 
-        success_response({auth_token: user.authentication_token, name: user.name})
+        success_response({
+          auth_token: user.authentication_token,
+          name: user.name,
+          username: user.username,
+          email_visibility: user.email_visibility,
+          registration_status: user.registration_status
+        })
       end
     end
   end
