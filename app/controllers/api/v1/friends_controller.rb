@@ -47,7 +47,7 @@ module Api
           }
         end
 
-        success_response({friends: friends})
+        success_response({friends: friends.uniq})
       end
 
       def invite
