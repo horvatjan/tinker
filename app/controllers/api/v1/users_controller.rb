@@ -7,8 +7,8 @@ module Api
       def index
         auth_user and return
 
-        by_name_username = User.select("id, name, email, username").where("name || username ILIKE ?", "%#{params[:keyword]}%").limit(50)
-        by_email = User.select("id, name, email, username").where("email_visibility = 1 AND email ILIKE ?", "%#{params[:keyword]}%").limit(50)
+        by_name_username = User.select("id, name, email, username").where("registration_status = 2 AND name || username ILIKE ?", "%#{params[:keyword]}%").limit(50)
+        by_email = User.select("id, name, email, username").where("registration_status = 2 AND email_visibility = 1 AND email ILIKE ?", "%#{params[:keyword]}%").limit(50)
 
         response = []
         by_name_username.each do |user|
