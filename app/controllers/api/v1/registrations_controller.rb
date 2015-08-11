@@ -89,7 +89,8 @@ module Api
           name: user.name,
           username: user.username,
           email_visibility: user.email_visibility,
-          registration_status: user.registration_status
+          registration_status: user.registration_status,
+          user_id: user.id
         })
       end
     end
