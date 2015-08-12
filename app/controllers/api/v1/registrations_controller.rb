@@ -54,6 +54,7 @@ module Api
         response = HTTParty.get("https://graph.facebook.com/me?access_token=#{params[:user][:access_token]}")
 
         return error_response('Access token is invalid', 102) if response["error"].present?
+        return error_response('Could not get email from Facebook. Probably you have not correctly authorized Tinkchat app. Go to Facebook, settings, remove Tinkchat app from the list of authorized apps and try again or contact our support service.', 103) unless response["email"].present?
 
         existing_user = User.where(email: response["email"]).first
 
