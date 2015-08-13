@@ -59,8 +59,18 @@ module Api
         existing_user = User.where(email: response["email"]).first
 
         if existing_user.present?
-          User.where(email: response["email"]).update_all(fbid: response["id"], active: 1, sign_in_count: (existing_user.sign_in_count + 1), current_sign_in_at: Time.now, last_sign_in_at: Time.now, current_sign_in_ip: request.remote_ip, last_sign_in_ip:request.remote_ip)
-          user = existing_user
+          User.where(email: response["email"]).update_all(
+            fbid: response["id"],
+            active: 1,
+            sign_in_count: (existing_user.sign_in_count + 1),
+            current_sign_in_at: Time.now,
+            last_sign_in_at: Time.now,
+            current_sign_in_ip: request.remote_ip,
+            last_sign_in_ip:request.remote_ip
+          )
+
+          existing_user.save
+          user = User.where(email: response["email"]).first
         else
           user = User.create(
             fbid: response["id"],
