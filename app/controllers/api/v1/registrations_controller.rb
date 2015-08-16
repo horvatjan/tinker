@@ -82,7 +82,8 @@ module Api
             current_sign_in_at: Time.now,
             last_sign_in_at: Time.now,
             current_sign_in_ip: request.remote_ip,
-            last_sign_in_ip:request.remote_ip
+            last_sign_in_ip:request.remote_ip,
+            registration_status: 1
           )
         end
 
