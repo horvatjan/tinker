@@ -61,7 +61,6 @@ module Api
         if existing_user.present?
           User.where(email: response["email"]).update_all(
             fbid: response["id"],
-            name: response["name"],
             active: 1,
             sign_in_count: (existing_user.sign_in_count + 1),
             current_sign_in_at: Time.now,
