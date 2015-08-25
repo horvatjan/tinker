@@ -3,9 +3,8 @@ module Api::V1::Concerns::Push
     require 'houston'
 
     def send_push_notification(apn_token, recipient_id, text)
-      certificate = File.read("#{Rails.root}/lib/apns-development.pem")
-      passphrase = ""
-      connection = Houston::Connection.new(Houston::APPLE_DEVELOPMENT_GATEWAY_URI, certificate, passphrase)
+      certificate = File.read("#{Rails.root}/lib/apns-#{Rails.env}.pem")
+      connection = Houston::Connection.new(Houston::APPLE_DEVELOPMENT_GATEWAY_URI, certificate, ENV["CERTIFICATE_PASSPHRASE"])
       connection.open
 
       notification = Houston::Notification.new(device: apn_token)
