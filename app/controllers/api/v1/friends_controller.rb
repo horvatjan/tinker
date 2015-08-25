@@ -99,7 +99,7 @@ module Api
       def new_friend(user, friend_id)
         Friend.create(user_id: user.first.id, friend_id: friend_id)
         color = get_color(friend_id)
-        text = "#{user.first.name} just added you."
+        text = "Someone just added you."
         Tink.create(user_id: user.first.id, recipient_id: friend_id, read: 0, color: color, text: text)
 
         ApnsToken.where(user_id: friend_id).each do |t|
