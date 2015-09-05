@@ -6,7 +6,7 @@ class ContactMailer < ActionMailer::Base
     @subject = message_params[:subject]
     @message = message_params[:message]
     @email = message_params[:email]
-    mail(to: ENV['CONTACT_MESSAGE_RECEIVER'], from: @email, subject: 'New message: ' + @subject).deliver
+    mail(to: ENV['CONTACT_MESSAGE_RECEIVER'], from: "no-reply@tinkchatapp.com", subject: 'New message: ' + @subject).deliver
   end
 
 end
