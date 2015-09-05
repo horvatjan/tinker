@@ -30,6 +30,8 @@ gem 'mail'
 
 gem 'mandrill-rails'
 
+gem 'mailgun_rails'
+
 gem 'houston'
 
 gem 'rails_layout'
