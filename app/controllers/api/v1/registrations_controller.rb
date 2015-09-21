@@ -62,6 +62,7 @@ module Api
           User.where(email: response["email"]).update_all(
             fbid: response["id"],
             active: 1,
+            name: response["name"],
             sign_in_count: (existing_user.sign_in_count + 1),
             current_sign_in_at: Time.now,
             last_sign_in_at: Time.now,
@@ -77,7 +78,8 @@ module Api
             email: response["email"],
             name: response["name"],
             username: response["username"],
-            active: 1, password: Passgen::generate(:pronounceable => true, :uppercase => false, :digits_after => 3),
+            active: 1,
+            password: Passgen::generate(:pronounceable => true, :uppercase => false, :digits_after => 3),
             sign_in_count: 1,
             current_sign_in_at: Time.now,
             last_sign_in_at: Time.now,
@@ -102,7 +104,8 @@ module Api
           username: user.username,
           email_visibility: user.email_visibility,
           registration_status: user.registration_status,
-          user_id: user.id
+          user_id: user.id,
+          fbid: response["id"]
         })
       end
     end
