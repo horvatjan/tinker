@@ -40,7 +40,6 @@ module Api
               j.email_visibility user.email_visibility
               j.registration_status user.registration_status
               j.user_id user.id
-              j.fbid (user.fbid.present? ? user.fbid : 0)
             end
           )
         else

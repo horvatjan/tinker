@@ -62,7 +62,7 @@ module Api
           User.where(email: response["email"]).update_all(
             fbid: response["id"],
             active: 1,
-            name: response["name"],
+            name: (existing_user.fbid.nil? ? response["name"] : existing_user.name),
             sign_in_count: (existing_user.sign_in_count + 1),
             current_sign_in_at: Time.now,
             last_sign_in_at: Time.now,
@@ -104,8 +104,7 @@ module Api
           username: user.username,
           email_visibility: user.email_visibility,
           registration_status: user.registration_status,
-          user_id: user.id,
-          fbid: response["id"]
+          user_id: user.id
         })
       end
     end
