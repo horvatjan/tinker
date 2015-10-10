@@ -12,7 +12,16 @@ module Api
         result = []
         tinks.each do |tink|
           sending_user = User.where(id: tink.user_id).first
-          res = {sender_name: sending_user.name, sender_id: sending_user.id, tink_id: tink.id, read: tink.read, created_at: tink.created_at.strftime("%FT%T%:z"), color: tink.color, text: tink.text}
+          res = {
+            sender_name: sending_user.name,
+            sender_id: sending_user.id,
+            tink_id: tink.id,
+            read: tink.read,
+            created_at: tink.created_at.strftime("%FT%T%:z"),
+            color: tink.color,
+            text: tink.text,
+            hashtags: tink.hashtags
+          }
           result.push res
         end
         result = {tinks: result}
@@ -29,19 +38,21 @@ module Api
         return error_response('Recipient has been banned', 105) unless Ban.where(user_id: user.first.id, banned_id: params[:tink][:recipient_id]).empty?
 
         color = get_color(params[:tink][:recipient_id])
-        if !params[:tink][:hashtags].empty?
-          hashtags = " " + params[:tink][:hashtags]
-        else
-          hashtags = ""
-        end
 
-        Tink.create(user_id: user.first.id, recipient_id: params[:tink][:recipient_id], read: 0, color: color, text: "#{user.first.name} is thinking of you.#{hashtags}")
+        Tink.create(
+          user_id: user.first.id,
+          recipient_id: params[:tink][:recipient_id],
+          read: 0,
+          color: color,
+          text: "#{user.first.name} is thinking of you.",
+          hashtags: params[:tink][:hashtags]
+        )
 
         ApnsToken.where(user_id: params[:tink][:recipient_id]).each do |t|
           send_push_notification(t.token, params[:tink][:recipient_id], "Someone is thinking of you.")
         end
 
-        success_response(Tink.where(id: Tink.last.id).select("user_id, recipient_id, read, text").first)
+        success_response(Tink.where(id: Tink.last.id).select("user_id, recipient_id, read, text, hashtags").first)
       end
 
       def destroy
